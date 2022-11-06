@@ -52,6 +52,17 @@ pipeline {
             }
         }
     }
+    post { 
+        always { 
+            echo 'This will be always executed'
+        }
+        success{
+            echo 'This will be executed on success'
+        }
+        failure{
+            echo 'This will be executed on failure'
+        }
+    }
 }
 
 def deploy(String environment){
@@ -62,8 +73,12 @@ def deploy(String environment){
 def test(String environment){
     echo "Tests on ${environment} environmnt triggered.."
     sh "docker run --network=host -d -t --name api_tests_executor_${environment} api_test_executor"
-    sh "docker exec api_tests_executor_${environment} cucumber --tags=@${environment} --format html --out test-output/report.html"
-    sh "docker cp api_tests_executor_${environment}:/usr/src/api-tests/test-output/report.html report_${environment}.html"
-    sh "docker rm -f api_tests_executor_${environment}"
-    sh "ls"
+    try{
+        sh "docker exec api_tests_executor_${environment} cucumber --tags=@${environment} --format html --out test-output/report.html"
+    }
+    finally{
+        sh "docker cp api_tests_executor_${environment}:/usr/src/api-tests/test-output/report.html report_${environment}.html"
+        sh "docker rm -f api_tests_executor_${environment}"
+        sh "ls"
+    }
 }
