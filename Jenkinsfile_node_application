@@ -80,5 +80,17 @@ def test(String environment){
         sh "docker cp api_tests_executor_${environment}:/usr/src/api-tests/test-output/report.html report_${environment}.html"
         sh "docker rm -f api_tests_executor_${environment}"
         sh "ls"
+        publishHTML(
+            [
+                allowMissing: false, 
+                alwaysLinkToLastBuild: false, 
+                keepAll: false, 
+                reportDir: '', 
+                reportFiles: "report_${environment}.html", 
+                reportName: "Test Report ${environment}", 
+                reportTitles: '', 
+                useWrapperFileDirectly: true
+            ]
+        )
     }
 }
