@@ -65,4 +65,5 @@ def test(String environment){
     sh "docker exec api_tests_executor_${environment} cucumber --tags=@${environment} --format html --out test-output/report.html"
     sh "docker cp api_tests_executor_${environment}:/usr/src/api-tests/test-output/report.html report_${environment}.html"
     sh "docker rm -f api_tests_executor_${environment}"
+    sh "ls"
 }
