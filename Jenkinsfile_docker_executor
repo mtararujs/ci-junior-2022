@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+    triggers { 
+        pollSCM('*/1 * * * *')
+        upstream(upstreamProjects: 'Test image base', threshold: hudson.model.Result.SUCCESS)
+    }
+    stages {
+        stage('build-docker-image') {
+            steps {
+                sh "docker build -t api_test_executor . -f Dockerfile_executor"
+            }
+        }
+    }
+}
