@@ -74,7 +74,7 @@ def test(String environment){
     echo "Tests on ${environment} environmnt triggered.."
     sh "docker run --network=host -d -t --name api_tests_executor_${environment} api_test_executor"
     try{
-        sh "docker exec api_tests_executor_${environment} cucumber --tags=@${environment} --format html --out test-output/report.html"
+        sh "docker exec api_tests_executor_${environment} cucumber --format html --out test-output/report.html"
     }
     finally{
         sh "docker cp api_tests_executor_${environment}:/usr/src/api-tests/test-output/report.html report_${environment}.html"
