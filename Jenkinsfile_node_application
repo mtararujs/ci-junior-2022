@@ -50,5 +50,5 @@ pipeline {
 
 def deploy(String environment){
     echo "Deployment on ${environment} environmnt triggered.."
-    build job: "UI Tests", parameters: [(name: "ENVIRONMENT", value:"${environment}")]
+    build job: "UI Tests", parameters: [string(name: "ENVIRONMENT", value:"${environment}")]
 }
