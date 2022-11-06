@@ -11,7 +11,9 @@ pipeline {
         }
         stage('deploy-dev') {
             steps {
-                echo "Deployment on DEV.."
+                script{
+                    deploy("DEV")
+                }
             }
         }
         stage('test-dev') {
@@ -21,7 +23,9 @@ pipeline {
         }
         stage('deploy-int') {
             steps {
-                echo "Deployment on INT.."
+                script{
+                    deploy("INT")
+                }
             }
         }
         stage('test-int') {
@@ -31,7 +35,9 @@ pipeline {
         }
         stage('deploy-prd') {
             steps {
-                echo "Deployment on PRD.."
+                script{
+                    deploy("PRD")
+                }
             }
         }
         stage('test-prd') {
@@ -40,4 +46,9 @@ pipeline {
             }
         }
     }
+}
+
+def deploy(String environment){
+    echo "Deployment on ${environment} environmnt triggered.."
+    build job: "UI Tests", parameters: [(name: "ENVIRONMENT", value:"${environment}")]
 }
